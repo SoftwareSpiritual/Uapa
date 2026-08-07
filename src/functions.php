@@ -2,10 +2,44 @@
 
 declare(strict_types=1);
 
-function fetch_all_courses(PDO $pdo): array
+function fetch_all_courses(PDO $pdo, int $carreraId): array
 {
-    $stmt = $pdo->query('SELECT * FROM courses ORDER BY periodo_orden IS NULL, periodo_orden, id');
+    $stmt = $pdo->prepare('SELECT * FROM courses WHERE carrera_id = :carrera_id ORDER BY periodo_orden IS NULL, periodo_orden, id');
+    $stmt->execute([':carrera_id' => $carreraId]);
     return $stmt->fetchAll();
+}
+
+function get_all_carreras(PDO $pdo): array
+{
+    return $pdo->query('SELECT * FROM carreras ORDER BY id')->fetchAll();
+}
+
+function get_current_carrera(PDO $pdo, array $carreras): array
+{
+    $slug = $_COOKIE['carrera'] ?? '';
+    foreach ($carreras as $carrera) {
+        if ($carrera['slug'] === $slug) {
+            return $carrera;
+        }
+    }
+
+    return $carreras[0];
+}
+
+function carrera_abbr(string $nombre): string
+{
+    $words = array_values(array_filter(
+        preg_split('/\s+/', $nombre),
+        static fn (string $w): bool => mb_strlen($w) > 2
+    ));
+    $letters = array_map(
+        static fn (string $w): string => mb_strtoupper(mb_substr($w, 0, 1)),
+        array_slice($words, 0, 2)
+    );
+
+    $abbr = implode('', $letters);
+
+    return $abbr !== '' ? $abbr : mb_strtoupper(mb_substr($nombre, 0, 2));
 }
 
 function group_by_periodo(array $courses): array
@@ -265,7 +299,7 @@ function next_courses(array $courses): array
     return $next;
 }
 
-function render_topbar(string $active): string
+function render_topbar(string $active, array $carrera, array $carreras, string $currentPage): string
 {
     $links = [
         'inicio' => ['href' => 'index.php', 'label' => 'Inicio'],
@@ -278,19 +312,37 @@ function render_topbar(string $active): string
         $items .= '<a class="nav-link' . $activeClass . '" href="' . h($link['href']) . '">' . h($link['label']) . '</a>';
     }
 
+    $options = '';
+    foreach ($carreras as $c) {
+        $selected = (int) $c['id'] === (int) $carrera['id'] ? ' selected' : '';
+        $options .= '<option value="' . h($c['slug']) . '"' . $selected . '>' . h($c['nombre']) . '</option>';
+    }
+
+    $abbr = h(carrera_abbr($carrera['nombre']));
+    $nombre = h($carrera['nombre']);
+    $currentPageAttr = h($currentPage);
+
     return <<<HTML
     <header class="topbar">
         <div class="topbar-inner">
             <div class="brand">
-                <span class="brand-mark">IS</span>
+                <span class="brand-mark">{$abbr}</span>
                 <div class="brand-text">
-                    <span class="brand-title">Pensum &mdash; Ingeniería de Software</span>
+                    <span class="brand-title">Pensum &mdash; {$nombre}</span>
                     <span class="brand-subtitle">UAPA &middot; Seguimiento de avance académico</span>
                 </div>
             </div>
-            <nav class="topbar-nav">
-                {$items}
-            </nav>
+            <div class="topbar-right">
+                <form class="carrera-switcher" method="get" action="switch-carrera.php">
+                    <input type="hidden" name="redirect" value="{$currentPageAttr}">
+                    <select name="slug" onchange="this.form.submit()" aria-label="Elegir carrera">
+                        {$options}
+                    </select>
+                </form>
+                <nav class="topbar-nav">
+                    {$items}
+                </nav>
+            </div>
         </div>
     </header>
     HTML;

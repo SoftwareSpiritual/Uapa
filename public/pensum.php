@@ -6,7 +6,9 @@ require __DIR__ . '/../src/db.php';
 require __DIR__ . '/../src/functions.php';
 
 $pdo = get_db();
-$courses = fetch_all_courses($pdo);
+$carreras = get_all_carreras($pdo);
+$carrera = get_current_carrera($pdo, $carreras);
+$courses = fetch_all_courses($pdo, (int) $carrera['id']);
 $grouped = group_by_periodo($courses);
 $optativasStats = compute_stats($grouped['optativas']);
 ?>
@@ -15,12 +17,12 @@ $optativasStats = compute_stats($grouped['optativas']);
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pensum &mdash; Ingeniería de Software</title>
+<title>Pensum &mdash; <?= h($carrera['nombre']) ?></title>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<?= render_topbar('pensum') ?>
+<?= render_topbar('pensum', $carrera, $carreras, 'pensum.php') ?>
 
 <main class="grid-wrapper">
     <div class="periods-grid">

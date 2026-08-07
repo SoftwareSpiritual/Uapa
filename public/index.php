@@ -6,7 +6,9 @@ require __DIR__ . '/../src/db.php';
 require __DIR__ . '/../src/functions.php';
 
 $pdo = get_db();
-$courses = fetch_all_courses($pdo);
+$carreras = get_all_carreras($pdo);
+$carrera = get_current_carrera($pdo, $carreras);
+$courses = fetch_all_courses($pdo, (int) $carrera['id']);
 $stats = compute_stats($courses);
 $enProgreso = courses_by_estado($courses, 'en_progreso');
 $proximas = next_courses($courses);
@@ -16,12 +18,12 @@ $proximas = next_courses($courses);
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inicio &mdash; Pensum Ingeniería de Software</title>
+<title>Inicio &mdash; Pensum <?= h($carrera['nombre']) ?></title>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<?= render_topbar('inicio') ?>
+<?= render_topbar('inicio', $carrera, $carreras, 'index.php') ?>
 
 <section class="dashboard-hero">
     <div class="hero-card">

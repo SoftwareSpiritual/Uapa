@@ -1,5 +1,12 @@
+CREATE TABLE IF NOT EXISTS carreras (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug TEXT NOT NULL UNIQUE,
+    nombre TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS courses (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    carrera_id INTEGER NOT NULL REFERENCES carreras(id),
     clave TEXT NOT NULL,
     nombre TEXT NOT NULL,
     periodo_orden INTEGER,
@@ -16,3 +23,4 @@ CREATE TABLE IF NOT EXISTS courses (
 
 CREATE INDEX IF NOT EXISTS idx_courses_periodo ON courses (periodo_orden);
 CREATE INDEX IF NOT EXISTS idx_courses_clave ON courses (clave);
+CREATE INDEX IF NOT EXISTS idx_courses_carrera ON courses (carrera_id);

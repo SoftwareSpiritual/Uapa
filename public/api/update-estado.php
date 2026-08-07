@@ -33,7 +33,7 @@ try {
     exit;
 }
 
-$allCourses = fetch_all_courses($pdo);
+$allCourses = fetch_all_courses($pdo, (int) $course['carrera_id']);
 
 if ($course['periodo_orden'] !== null) {
     $periodoOrden = (int) $course['periodo_orden'];

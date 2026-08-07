@@ -86,9 +86,47 @@ body {
     flex-wrap: wrap;
 }
 
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+}
+
 .topbar-nav {
     display: flex;
     gap: 0.35rem;
+}
+
+.carrera-switcher select {
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.45rem 2rem 0.45rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 14px;
+}
+
+.carrera-switcher select:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.carrera-switcher select:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 1px;
+}
+
+.carrera-switcher select option {
+    color: var(--text);
+    background: var(--surface);
 }
 
 .nav-link {
