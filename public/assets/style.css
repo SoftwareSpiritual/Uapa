@@ -438,22 +438,37 @@ body {
 }
 
 .wave-path {
-    fill: rgba(255, 255, 255, 0.3);
+    fill: rgba(255, 255, 255, 0.32);
 }
 
 .wave-svg-back {
-    animation: wave-scroll 7s linear infinite;
-    opacity: 0.55;
+    animation: wave-scroll 7s linear infinite, wave-bob 3.4s ease-in-out infinite;
+    opacity: 0.5;
 }
 
 .wave-svg-front {
-    animation: wave-scroll 4s linear infinite reverse;
-    opacity: 0.4;
+    animation: wave-scroll 4s linear infinite reverse, wave-bob 2.6s ease-in-out infinite reverse;
+    opacity: 0.55;
+}
+
+.bar-sheen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 46%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
 }
 
 @keyframes wave-scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
+}
+
+@keyframes wave-bob {
+    0%, 100% { margin-top: 0; }
+    50% { margin-top: 3px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

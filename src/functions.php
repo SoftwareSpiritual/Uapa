@@ -138,11 +138,12 @@ function render_progress_bar(array $stats, bool $animated = false, string $size 
         $wave = <<<HTML
         <div class="bar-wave" style="width:{$pctFilled}%">
             <svg class="wave-svg wave-svg-back" viewBox="0 0 2400 40" preserveAspectRatio="none">
-                <path class="wave-path" d="M0 22 Q150 8 300 22 T600 22 T900 22 T1200 22 T1500 22 T1800 22 T2100 22 T2400 22 V40 H0 Z"></path>
+                <path class="wave-path" d="M0 11 Q150 -4 300 11 T600 11 T900 11 T1200 11 T1500 11 T1800 11 T2100 11 T2400 11 V40 H0 Z"></path>
             </svg>
             <svg class="wave-svg wave-svg-front" viewBox="0 0 2400 40" preserveAspectRatio="none">
-                <path class="wave-path" d="M0 20 Q150 2 300 20 T600 20 T900 20 T1200 20 T1500 20 T1800 20 T2100 20 T2400 20 V40 H0 Z"></path>
+                <path class="wave-path" d="M0 8 Q150 -8 300 8 T600 8 T900 8 T1200 8 T1500 8 T1800 8 T2100 8 T2400 8 V40 H0 Z"></path>
             </svg>
+            <div class="bar-sheen"></div>
         </div>
         HTML;
     }
