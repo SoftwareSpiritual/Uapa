@@ -134,11 +134,20 @@
         if (!ev.target.closest('.estado-menu')) {
             closeMenu();
         }
+
+        var openCarrera = document.querySelector('.carrera-switcher[open]');
+        if (openCarrera && !ev.target.closest('.carrera-switcher')) {
+            openCarrera.removeAttribute('open');
+        }
     });
 
     document.addEventListener('keydown', function (ev) {
         if (ev.key === 'Escape') {
             closeMenu();
+            var openCarrera = document.querySelector('.carrera-switcher[open]');
+            if (openCarrera) {
+                openCarrera.removeAttribute('open');
+            }
             return;
         }
         if (ev.key === 'Enter' || ev.key === ' ') {

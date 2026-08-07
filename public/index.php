@@ -114,5 +114,6 @@ $proximas = next_courses($courses);
     </section>
 </main>
 
+<script src="assets/app.js" defer></script>
 </body>
 </html>

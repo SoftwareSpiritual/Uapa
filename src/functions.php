@@ -312,15 +312,30 @@ function render_topbar(string $active, array $carrera, array $carreras, string $
         $items .= '<a class="nav-link' . $activeClass . '" href="' . h($link['href']) . '">' . h($link['label']) . '</a>';
     }
 
+    $checkIcon = '<svg class="carrera-option-check" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>';
+
     $options = '';
     foreach ($carreras as $c) {
-        $selected = (int) $c['id'] === (int) $carrera['id'] ? ' selected' : '';
-        $options .= '<option value="' . h($c['slug']) . '"' . $selected . '>' . h($c['nombre']) . '</option>';
+        $isCurrent = (int) $c['id'] === (int) $carrera['id'];
+        $href = 'switch-carrera.php?slug=' . urlencode($c['slug']) . '&redirect=' . urlencode($currentPage);
+        $optAbbr = h(carrera_abbr($c['nombre']));
+        $optNombre = h($c['nombre']);
+        $currentClass = $isCurrent ? ' is-current' : '';
+        $check = $isCurrent ? $checkIcon : '';
+
+        $options .= <<<HTML
+        <li>
+            <a class="carrera-option{$currentClass}" href="{$href}">
+                <span class="carrera-option-icon">{$optAbbr}</span>
+                <span class="carrera-option-label">{$optNombre}</span>
+                {$check}
+            </a>
+        </li>
+        HTML;
     }
 
     $abbr = h(carrera_abbr($carrera['nombre']));
     $nombre = h($carrera['nombre']);
-    $currentPageAttr = h($currentPage);
 
     return <<<HTML
     <header class="topbar">
@@ -333,12 +348,15 @@ function render_topbar(string $active, array $carrera, array $carreras, string $
                 </div>
             </div>
             <div class="topbar-right">
-                <form class="carrera-switcher" method="get" action="switch-carrera.php">
-                    <input type="hidden" name="redirect" value="{$currentPageAttr}">
-                    <select name="slug" onchange="this.form.submit()" aria-label="Elegir carrera">
+                <details class="carrera-switcher">
+                    <summary class="carrera-trigger">
+                        <span>{$nombre}</span>
+                        <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                    </summary>
+                    <ul class="carrera-options">
                         {$options}
-                    </select>
-                </form>
+                    </ul>
+                </details>
                 <nav class="topbar-nav">
                     {$items}
                 </nav>
