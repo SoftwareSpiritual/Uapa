@@ -437,6 +437,15 @@ body {
     height: calc(100% + 10px);
 }
 
+.progress-tank.size-sm .wave-svg {
+    top: -2px;
+    height: calc(100% + 4px);
+}
+
+.progress-tank.size-sm .bar-sheen {
+    height: 55%;
+}
+
 .wave-path {
     fill: rgba(255, 255, 255, 0.32);
 }

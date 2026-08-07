@@ -241,7 +241,7 @@ function render_period_header(string $label, array $stats, string $scope, ?int $
     $pct = $stats['pct_aprobada'];
     $creditosAprobados = $stats['creditos_aprobados'];
     $creditosTotales = $stats['creditos_totales'];
-    $bar = render_progress_bar($stats, false, 'sm');
+    $bar = render_progress_bar($stats, true, 'sm');
 
     return <<<HTML
     <header class="period-header" data-scope="{$scope}">

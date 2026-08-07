@@ -122,6 +122,12 @@
         if (segA) segA.style.width = stats.pct_aprobada + '%';
         if (segE) segE.style.width = stats.pct_en_progreso + '%';
         if (segP) segP.style.width = stats.pct_planificada + '%';
+
+        var wave = header.querySelector('.bar-wave');
+        if (wave) {
+            var pctFilled = Math.min(100, stats.pct_aprobada + stats.pct_en_progreso + stats.pct_planificada);
+            wave.style.width = pctFilled + '%';
+        }
     }
 
     document.addEventListener('click', function (ev) {
